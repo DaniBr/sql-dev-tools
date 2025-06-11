@@ -69,7 +69,7 @@ docker run -it -p 8888:8888 -v $(pwd)/sql:/sql sql-dev-tools:0.1
 
 3. **Manage Schema Migrations** with atlas:
    ```bash
-   docker run -v $(pwd)/sql:/sql sql-dev-tools:0.1 atlas schema apply --url "mysql://user:pass@host:3306/dbname" --file /sql/schema.sql
+   docker run -v $(pwd)/sql:/sql sql-dev-tools:0.1 atlas schema apply --url "mysql://user:pass@host:3306/database_name" --file /sql/schema.sql
    ```
 
 4. **Generate Go Code** with sqlc:
