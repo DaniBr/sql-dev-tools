@@ -1,7 +1,7 @@
 FROM ubuntu:25.04
 LABEL name="sql-dev-tools"
 LABEL maintainer="Daniel Bronshtein"
-LABEL version="0.1"
+LABEL version="0.1.1"
 LABEL description="SQL development tools for various scenarios"
 LABEL homepage="https://github.com/DaniBr/sql-dev-tools"
 LABEL repository="https://github.com/DaniBr/sql-dev-tools"
@@ -9,7 +9,7 @@ LABEL license="MIT"
 
 # packages: air(go\curl), task(go\snap\brew), sqlc(go\snap\brew?), atlas(curl\brew), SQLFluff (pip), sql-formatter (npm)
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     nodejs npm \
     python3 python3-pip \
     mysql-client \
@@ -20,9 +20,9 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN rm /usr/lib/python3.*/EXTERNALLY-MANAGED
 
-RUN pip3 install --no-cache-dir \
+RUN pip3 install --no-cache-dir --root-user-action \
     sqlfluff
-RUN npm install -g \
+RUN npm install -g --no-optional \
     sql-formatter
 
 # Install Task
