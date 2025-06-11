@@ -30,7 +30,7 @@ This Docker image is built on `ubuntu:25.04` and provides a development environm
 
 1. **Pull the Image** (if published to a registry, e.g., Docker Hub):
    ```bash
-   docker pull danibron/sql-dev-tools:0.1
+   docker pull danibron/sql-dev-tools:0.1.1
    ```
 
 2. **Or Build the Image Locally**:
@@ -38,7 +38,7 @@ This Docker image is built on `ubuntu:25.04` and provides a development environm
    ```bash
    git clone https://github.com/DaniBr/sql-dev-tools.git
    cd sql-dev-tools
-   docker build -t sql-dev-tools:0.1 .
+   docker build -t sql-dev-tools:0.1.1 .
    ```
 
 ## Usage
@@ -47,7 +47,7 @@ This Docker image is built on `ubuntu:25.04` and provides a development environm
 
 Start the container with the default command (`air` for live-reloading):
 ```bash
-docker run -it -p 8888:8888 -v $(pwd)/sql:/sql sql-dev-tools:0.1
+docker run -it -p 8888:8888 -v $(pwd)/sql:/sql sql-dev-tools:0.1.1
 ```
 
 - `-p 8888:8888`: Maps port 8888 for `air` or other web-based tools.
@@ -57,22 +57,22 @@ docker run -it -p 8888:8888 -v $(pwd)/sql:/sql sql-dev-tools:0.1
 
 1. **Lint SQL Files** with SQLFluff:
    ```bash
-   docker run -v $(pwd)/sql:/sql sql-dev-tools:0.1 sqlfluff lint /sql/queries.sql
+   docker run -v $(pwd)/sql:/sql sql-dev-tools:0.1.1 sqlfluff lint /sql/queries.sql
    ```
 
 2. **Manage Schema Migrations** with atlas:
    ```bash
-   docker run -v $(pwd)/sql:/sql sql-dev-tools:0.1 atlas schema apply --url "mysql://user:pass@host:3306/database_name" --file /sql/schema.sql
+   docker run -v $(pwd)/sql:/sql sql-dev-tools:0.1.1 atlas schema apply --url "mysql://user:pass@host:3306/database_name" --file /sql/schema.sql
    ```
 
 3. **Generate Go Code** with sqlc:
    ```bash
-   docker run -v $(pwd)/sql:/sql sql-dev-tools:0.1 sqlc generate
+   docker run -v $(pwd)/sql:/sql sql-dev-tools:0.1.1 sqlc generate
    ```
 
 4. **Run Tasks** with task:
    ```bash
-   docker run -v $(pwd)/sql:/sql sql-dev-tools:0.1 task build
+   docker run -v $(pwd)/sql:/sql sql-dev-tools:0.1.1 task build
    ```
 
 5. **Update procedures, functions, triggers** with database client:
