@@ -19,7 +19,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN rm /usr/lib/python3.*/EXTERNALLY-MANAGED
 
 # Install SQLFluff
-RUN pip3 install --no-cache-dir --root-user-action \
+RUN pip3 install --no-cache-dir --root-user-action=ignore \
     sqlfluff
 
 # Install Task
