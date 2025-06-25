@@ -35,9 +35,9 @@ RUN curl -sSf https://atlasgo.sh | sh
 # Download and extract reflex
 RUN curl -L -o reflex.tar.gz https://github.com/cespare/reflex/releases/download/v0.3.1/reflex_linux_amd64.tar.gz \
     && tar -xzf reflex.tar.gz \
-    && mv reflex /usr/local/bin/reflex \
-    && chmod +x /usr/local/bin/reflex \
-    && rm reflex.tar.gz
+    && mv reflex_linux_amd64/reflex /usr/bin/reflex \
+    && chmod +x /usr/bin/reflex \
+    && rm -r reflex*
 
 #COPY ./default-config /default-config
 WORKDIR /sql
