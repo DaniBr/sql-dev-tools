@@ -7,6 +7,8 @@ LABEL homepage="https://github.com/DaniBr/sql-dev-tools"
 LABEL repository="https://github.com/DaniBr/sql-dev-tools"
 LABEL license="MIT"
 
+ARG TARGETARCH
+
 # packages: air(go\curl), task(go\snap\brew), sqlc(go\snap\brew?), atlas(curl\brew), SQLFluff (pip)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 python3-pip \
@@ -25,19 +27,26 @@ RUN pip3 install --no-cache-dir --root-user-action=ignore \
 # Install Task
 RUN curl -sL https://taskfile.dev/install.sh | sh
 
-# Install sqlc
-RUN curl -sL https://github.com/sqlc-dev/sqlc/releases/download/v1.29.0/sqlc_1.29.0_linux_amd64.tar.gz | \
-    tar -xz -C /usr/local/bin sqlc
-
 # Install Atlas
 RUN curl -sSf https://atlasgo.sh | sh
 
+# Install sqlc
+RUN if [ "$TARGETARCH" = "amd64" ] || [ "$TARGETARCH" = "arm64" ]; then \
+    curl -sL https://github.com/sqlc-dev/sqlc/releases/download/v1.29.0/sqlc_1.29.0_linux_${TARGETARCH}.tar.gz | tar -xz -C /usr/local/bin sqlc; \
+  else \
+    echo "Unsupported architecture: $TARGETARCH" && exit 1; \
+  fi
+
 # Download and extract reflex
-RUN curl -L -o reflex.tar.gz https://github.com/cespare/reflex/releases/download/v0.3.1/reflex_linux_amd64.tar.gz \
-    && tar -xzf reflex.tar.gz \
-    && mv reflex_linux_amd64/reflex /usr/bin/reflex \
-    && chmod +x /usr/bin/reflex \
-    && rm -r reflex*
+RUN if [ "$TARGETARCH" = "amd64" ] || [ "$TARGETARCH" = "arm64" ]; then \
+    curl -L -o reflex.tar.gz https://github.com/cespare/reflex/releases/download/v0.3.1/reflex_linux_${TARGETARCH}.tar.gz && \
+    tar -xzf reflex.tar.gz && \
+    mv reflex_linux_${TARGETARCH}/reflex /usr/bin/reflex && \
+    chmod +x /usr/bin/reflex && \
+    rm -r reflex*; \
+  else \
+    echo "Unsupported architecture: $TARGETARCH" && exit 1; \
+  fi
 
 #COPY ./default-config /default-config
 WORKDIR /sql
