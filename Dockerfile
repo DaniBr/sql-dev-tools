@@ -7,7 +7,7 @@ LABEL homepage="https://github.com/DaniBr/sql-dev-tools"
 LABEL repository="https://github.com/DaniBr/sql-dev-tools"
 LABEL license="MIT"
 
-ARG TARGETARCH
+ARG TARGETARCH=amd64
 
 # packages: air(go\curl), task(go\snap\brew), sqlc(go\snap\brew?), atlas(curl\brew), SQLFluff (pip)
 RUN apt-get update && apt-get install -y --no-install-recommends \
