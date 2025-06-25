@@ -7,7 +7,7 @@ A Docker image containing a suite of SQL development tools for working with vari
 ## Overview
 
 - **Name**: sql-dev-tools
-- **Version**: 0.1.1
+- **Version**: 0.1.2
 - **Maintainer**: Daniel Bronshtein
 - **Homepage**: [https://github.com/DaniBr/sql-dev-tools](https://github.com/DaniBr/sql-dev-tools)
 - **License**: MIT
@@ -15,9 +15,9 @@ A Docker image containing a suite of SQL development tools for working with vari
 This Docker image is built on `ubuntu:25.04` and provides a development environment with the following tools:
 - **SQLFluff**: SQL linter and auto-formatter.
 - **atlas**: Database schema migration and inspection tool.
-- **sqlc**: Generates type-safe code from SQL queries.
+- **sqlc**: Generates type-safe code ([Go](https://github.com/sqlc-dev/sqlc), [Python](https://github.com/sqlc-dev/sqlc-gen-python), [TypeScript](https://github.com/sqlc-dev/sqlc-gen-typescript)) from SQL queries.
 - **task**: Task runner for automating workflows.
-- **air**: Live-reloading.
+- **reflex**: Live-reloading.
 - **mysql-client**: CLI for MySQL databases.
 - **postgresql-client**: CLI for PostgreSQL databases.
 
@@ -30,7 +30,7 @@ This Docker image is built on `ubuntu:25.04` and provides a development environm
 
 1. **Pull the Image** (if published to a registry, e.g., Docker Hub):
    ```bash
-   docker pull danibron/sql-dev-tools:0.1.1
+   docker pull danibron/sql-dev-tools:0.1.2
    ```
 
 2. **Or Build the Image Locally**:
@@ -38,41 +38,41 @@ This Docker image is built on `ubuntu:25.04` and provides a development environm
    ```bash
    git clone https://github.com/DaniBr/sql-dev-tools.git
    cd sql-dev-tools
-   docker build -t sql-dev-tools:0.1.1 .
+   docker build -t sql-dev-tools:0.1.2 .
    ```
 
 ## Usage
 
 ### Running the Container
 
-Start the container with the default command (`air` for live-reloading):
+Start the container with the default command,
+which is `reflex -s -g reflex.conf -- reflex -c reflex.conf` ([see here](https://github.com/cespare/reflex?tab=readme-ov-file#configuration-file)):
 ```bash
-docker run -it -p 8888:8888 -v $(pwd)/sql:/sql sql-dev-tools:0.1.1
+docker run -it -v $(pwd)/sql:/sql sql-dev-tools:0.1.2
 ```
 
-- `-p 8888:8888`: Maps port 8888 for `air` or other web-based tools.
-- `-v $(pwd)/sql:/sql`: Mounts a local `sql` directory to `/sql` in the container for your SQL files and `.air.toml` configuration.
+- `-v $(pwd)/sql:/sql`: Mounts a local `sql` directory to `/sql` in the container for your SQL files and `reflex.conf` configuration.
 
 ### Example Workflow
 
 1. **Lint SQL Files** with SQLFluff:
    ```bash
-   docker run -v $(pwd)/sql:/sql sql-dev-tools:0.1.1 sqlfluff lint /sql/queries.sql
+   docker run -v $(pwd)/sql:/sql sql-dev-tools:0.1.2 sqlfluff lint /sql/queries.sql
    ```
 
 2. **Manage Schema Migrations** with atlas:
    ```bash
-   docker run -v $(pwd)/sql:/sql sql-dev-tools:0.1.1 atlas schema apply --url "mysql://user:pass@host:3306/database_name" --file /sql/schema.sql
+   docker run -v $(pwd)/sql:/sql sql-dev-tools:0.1.2 atlas schema apply --url "mysql://user:pass@host:3306/database_name" --file /sql/schema.sql
    ```
 
 3. **Generate Go Code** with sqlc:
    ```bash
-   docker run -v $(pwd)/sql:/sql sql-dev-tools:0.1.1 sqlc generate
+   docker run -v $(pwd)/sql:/sql sql-dev-tools:0.1.2 sqlc generate
    ```
 
 4. **Run Tasks** with task:
    ```bash
-   docker run -v $(pwd)/sql:/sql sql-dev-tools:0.1.1 task build
+   docker run -v $(pwd)/sql:/sql sql-dev-tools:0.1.2 task build
    ```
 
 5. **Update procedures, functions, triggers** with database client:
@@ -84,14 +84,10 @@ docker run -it -p 8888:8888 -v $(pwd)/sql:/sql sql-dev-tools:0.1.1
 ### Configuration
 
 - The image includes a `/default-config` directory with default settings.
-- To use a custom `air` configuration, ensure a `.air.toml` file is present in your mounted `/sql` directory.
-- Example `.air.toml`:
-  ```toml
-  root = "."
-  tmp_dir = "tmp"
-  [build]
-  cmd = "go build -o ./tmp/main ."
-  bin = "tmp/main"
+- To use a custom `reflex` configuration, ensure a `reflex.conf` file is present in your mounted `/sql` directory.
+- Example `reflex.conf`:
+  ```bash
+  -r 'schema\.sql$' --start-service -- task update_schema
   ```
 
 ## Contributing

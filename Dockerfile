@@ -32,9 +32,14 @@ RUN curl -sL https://github.com/sqlc-dev/sqlc/releases/download/v1.29.0/sqlc_1.2
 # Install Atlas
 RUN curl -sSf https://atlasgo.sh | sh
 
-# Install Air
-RUN curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh | sh
+# Download and extract reflex
+RUN curl -L -o reflex.tar.gz https://github.com/cespare/reflex/releases/download/v0.3.1/reflex_linux_amd64.tar.gz \
+    && tar -xzf reflex.tar.gz \
+    && mv reflex /usr/local/bin/reflex \
+    && chmod +x /usr/local/bin/reflex \
+    && rm reflex.tar.gz
 
 #COPY ./default-config /default-config
 WORKDIR /sql
-CMD ["air", "-c", "/sql/.air.toml"]
+CMD ["reflex", "-s", "-g", "/sql/reflex.conf", "--", "reflex", "-c", "/sql/reflex.conf"]
+
