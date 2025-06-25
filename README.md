@@ -55,9 +55,10 @@ docker run -it -v $(pwd)/sql:/sql sql-dev-tools:0.1.2
 
 ### Configuration
 
-- The image includes a `/default-config` directory with default settings.
-- To use a custom `reflex` configuration, ensure a `reflex.conf` file is present in your mounted `/sql` directory.
-- Example `reflex.conf`:
+The tool uses a `reflex.conf` file for its configuration.  
+Any changes made to `reflex.conf` are **hot reloaded**, so you do not need to restart the tool when updating it.  
+
+Example `reflex.conf`:
   ```bash
   -r 'schema\.sql$' --start-service -- task update_schema
   ```
