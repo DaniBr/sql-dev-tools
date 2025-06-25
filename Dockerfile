@@ -1,7 +1,7 @@
 FROM ubuntu:25.04
 LABEL name="sql-dev-tools"
 LABEL maintainer="Daniel Bronshtein"
-LABEL version="0.1.1"
+LABEL version="0.1.2"
 LABEL description="SQL development tools for various scenarios"
 LABEL homepage="https://github.com/DaniBr/sql-dev-tools"
 LABEL repository="https://github.com/DaniBr/sql-dev-tools"
