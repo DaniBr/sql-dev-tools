@@ -53,6 +53,15 @@ docker run -it -v $(pwd)/sql:/sql sql-dev-tools:0.1.2
 
 - `-v $(pwd)/sql:/sql`: Mounts a local `sql` directory to `/sql` in the container for your SQL files and `reflex.conf` configuration.
 
+### Configuration
+
+- The image includes a `/default-config` directory with default settings.
+- To use a custom `reflex` configuration, ensure a `reflex.conf` file is present in your mounted `/sql` directory.
+- Example `reflex.conf`:
+  ```bash
+  -r 'schema\.sql$' --start-service -- task update_schema
+  ```
+
 ### Example Workflow
 
 1. **Lint SQL Files** with SQLFluff:
@@ -70,25 +79,11 @@ docker run -it -v $(pwd)/sql:/sql sql-dev-tools:0.1.2
    docker run -v $(pwd)/sql:/sql sql-dev-tools:0.1.2 sqlc generate
    ```
 
-4. **Run Tasks** with task:
-   ```bash
-   docker run -v $(pwd)/sql:/sql sql-dev-tools:0.1.2 task build
-   ```
-
-5. **Update procedures, functions, triggers** with database client:
+4. **Update procedures, functions, triggers** with database client:
     ```bash
     psql -d $DATABASE_URL -f my-functions.sql
     mysql $DATABASE_NAME --user=$DATABASE_USER < my-functions.sql
     ```
-
-### Configuration
-
-- The image includes a `/default-config` directory with default settings.
-- To use a custom `reflex` configuration, ensure a `reflex.conf` file is present in your mounted `/sql` directory.
-- Example `reflex.conf`:
-  ```bash
-  -r 'schema\.sql$' --start-service -- task update_schema
-  ```
 
 ## Contributing
 
