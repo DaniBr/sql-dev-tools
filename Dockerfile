@@ -9,10 +9,10 @@ LABEL license="MIT"
 
 ARG TARGETARCH=amd64
 RUN if [ "$TARGETARCH" = "amd64" ] || [ "$TARGETARCH" = "arm64" ]; then \
-    echo "Building for architecture: $TARGETARCH"; \
-  else \
-    echo "Unsupported architecture: $TARGETARCH" && exit 1; \
-  fi
+      echo "Building for architecture: $TARGETARCH"; \
+    else \
+      echo "Unsupported architecture: $TARGETARCH" && exit 1; \
+    fi
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 \
@@ -21,9 +21,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     postgresql-client \
     curl
 
-RUN rm /usr/lib/python3.*/EXTERNALLY-MANAGED
-
 # Install SQLFluff
+RUN rm /usr/lib/python3.*/EXTERNALLY-MANAGED
 RUN pip3 install --no-cache-dir --root-user-action=ignore sqlfluff
 
 # Install Task
@@ -45,7 +44,5 @@ RUN curl -L -o reflex.tar.gz https://github.com/cespare/reflex/releases/download
 # Clean up
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-#COPY ./default-config /default-config
 WORKDIR /sql
 CMD ["reflex", "-s", "-g", "/sql/reflex.conf", "--", "reflex", "-c", "/sql/reflex.conf"]
-
