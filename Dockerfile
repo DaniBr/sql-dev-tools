@@ -21,8 +21,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     postgresql-client \
     curl
 
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
-
 RUN rm /usr/lib/python3.*/EXTERNALLY-MANAGED
 
 # Install SQLFluff
@@ -43,6 +41,9 @@ RUN curl -L -o reflex.tar.gz https://github.com/cespare/reflex/releases/download
     mv reflex_linux_${TARGETARCH}/reflex /usr/bin/reflex && \
     chmod +x /usr/bin/reflex && \
     rm -r reflex*
+
+# Clean up
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 #COPY ./default-config /default-config
 WORKDIR /sql
