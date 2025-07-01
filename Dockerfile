@@ -45,4 +45,4 @@ RUN curl -L -o reflex.tar.gz https://github.com/cespare/reflex/releases/download
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /sql
-CMD ["reflex", "-s", "-g", "/sql/reflex.conf", "--", "reflex", "-c", "/sql/reflex.conf"]
+CMD ["reflex", "-s", "-g", "reflex.conf", "--", "reflex", "-c", "reflex.conf"]
