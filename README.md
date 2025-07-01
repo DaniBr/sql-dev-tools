@@ -7,7 +7,7 @@ A Docker image containing a suite of SQL development tools for working with vari
 ## Overview
 
 - **Name**: sql-dev-tools
-- **Version**: 0.1.2
+- **Version**: 0.1.3
 - **Maintainer**: Daniel Bronshtein
 - **Homepage**: [https://github.com/DaniBr/sql-dev-tools](https://github.com/DaniBr/sql-dev-tools)
 - **License**: MIT
@@ -30,7 +30,7 @@ This Docker image is built on `ubuntu:25.04` and provides a development environm
 
 1. **Pull the Image** (if published to a registry, e.g., Docker Hub):
    ```bash
-   docker pull danibron/sql-dev-tools:0.1.2
+   docker pull danibron/sql-dev-tools:0.1.3
    ```
 
 2. **Or Build the Image Locally**:
@@ -38,7 +38,7 @@ This Docker image is built on `ubuntu:25.04` and provides a development environm
    ```bash
    git clone https://github.com/DaniBr/sql-dev-tools.git
    cd sql-dev-tools
-   docker build -t sql-dev-tools:0.1.2 .
+   docker build -t sql-dev-tools:0.1.3 .
    ```
 
 ## Usage
@@ -48,7 +48,7 @@ This Docker image is built on `ubuntu:25.04` and provides a development environm
 Start the container with the default command,
 which is `reflex -s -g reflex.conf -- reflex -c reflex.conf` ([see here](https://github.com/cespare/reflex?tab=readme-ov-file#configuration-file)):
 ```bash
-docker run -it -v $(pwd)/sql:/sql sql-dev-tools:0.1.2
+docker run -it -v $(pwd)/sql:/sql sql-dev-tools:0.1.3
 ```
 
 - `-v $(pwd)/sql:/sql`: Mounts a local `sql` directory to `/sql` in the container for your SQL files and `reflex.conf` configuration.
@@ -67,17 +67,17 @@ Example `reflex.conf`:
 
 1. **Lint SQL Files** with SQLFluff:
    ```bash
-   docker run -v $(pwd)/sql:/sql sql-dev-tools:0.1.2 sqlfluff lint /sql/queries.sql
+   docker run -v $(pwd)/sql:/sql sql-dev-tools:0.1.3 sqlfluff lint /sql/queries.sql
    ```
 
 2. **Manage Schema Migrations** with atlas:
    ```bash
-   docker run -v $(pwd)/sql:/sql sql-dev-tools:0.1.2 atlas schema apply --url "mysql://user:pass@host:3306/database_name" --file /sql/schema.sql
+   docker run -v $(pwd)/sql:/sql sql-dev-tools:0.1.3 atlas schema apply --url "mysql://user:pass@host:3306/database_name" --file /sql/schema.sql
    ```
 
 3. **Generate Go Code** with sqlc:
    ```bash
-   docker run -v $(pwd)/sql:/sql sql-dev-tools:0.1.2 sqlc generate
+   docker run -v $(pwd)/sql:/sql sql-dev-tools:0.1.3 sqlc generate
    ```
 
 4. **Update procedures, functions, triggers** with database client:
