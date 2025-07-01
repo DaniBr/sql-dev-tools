@@ -3,6 +3,8 @@
         "Bronshtein",
         "danibron",
         "sqlc",
-        "sqlfluff"
+        "sqlfluff",
+        "noninteractive",
+        "psql"
     ]
 }
